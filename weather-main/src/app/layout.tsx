@@ -28,7 +28,10 @@ export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>
+) {
+  
+
   return (
     
     <html lang="en" className="dark" >
@@ -39,8 +42,10 @@ export default function RootLayout({
       
       
        <NavBar/>
+     
         
-        <SearchBar/>
+
+      
        
         <main style={{ padding: '1rem' }}>
          {children}
