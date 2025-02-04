@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import SearchBar from "../../components/SearchBar";
+
 import NavBar from "../../components/NavBar";
 
 
@@ -28,7 +28,10 @@ export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>
+) {
+  
+
   return (
     
     <html lang="en" className="dark" >
@@ -39,8 +42,10 @@ export default function RootLayout({
       
       
        <NavBar/>
+     
         
-        <SearchBar/>
+
+      
        
         <main style={{ padding: '1rem' }}>
          {children}

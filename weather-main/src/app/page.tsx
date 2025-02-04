@@ -1,25 +1,77 @@
 // import "./globals.css";
+"use client";
+import {useState} from 'react';
+import SearchBar from "../../components/SearchBar";
+
+
+
+// Define the shape of the weather data; interface is used because typescript cannot read null values 
+interface WeatherData {
+  city:{
+    name:string;
+  } 
+
+  list: {
+    
+    main :{
+    temp: number
+    humidity: number
+    }
+   
+   
+  } [];
+  
+  
+    
+  };
 
 
 export default function Home() {
+  // output searchdata as WeatherData Interface or null (initially null)
+  const [searchdata, setSearchdata] = useState<WeatherData | null>(null);
+
+  const weatherData = (data:any) =>{
+    setSearchdata(data);
+   
+
+  };
+
+  
+
   return (
     <>
+    
+ 
+   <SearchBar onSearch ={weatherData}/>
  
    
-   
-   <div className="container m-auto grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-4 ">
+   <div className="container m-auto grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+ 
     <div className="grid gap-4">
       {/* City Name container - 1st grid */}
+   
+    
+  
         <div className="tile grid md:grid-cols-2 dark:bg-gray-600  rounded-md p-6">
         <div className="tile dark:bg-gray-600 rounded-md p-6">
-          <h1 id="city-name" className="tile-marker font-bold ">City Name</h1>
-          <p id="chance-rain">Chance of Rain: %</p>
-          <p id="degrees">Degrees in Farenheit</p>
-          </div>
+        {searchdata ? (
+        <>
+          <h1 id="city-name" className="tile-marker font-bold ">City Name: {searchdata.city.name}</h1>
+          <p id="humidity">Humidity: {searchdata.list[0].main.humidity} %</p>
+          <p id="degrees">{Math.floor(searchdata.list[0].main.temp)} F</p>
+        
+          </>
+          ):(
+            <>
+        <h1 id="city-name" className="tile-marker font-bold">City Name</h1>
+        <p id="humidity">Humidity %</p>
+        <p id="degrees">Temperature</p>
+      </>
+          )}   </div>
           <div className="tile dark:bg-gray-600  sm:col-span-1 md:col-span-1 p-4">
            <p>⛅ Image will go here!🌞</p>
           </div>
-          
+         
         </div>
         {/* Today's Forecast container -2nd grid */}
         <div className="tile dark:bg-gray-600  rounded-md p-4">
