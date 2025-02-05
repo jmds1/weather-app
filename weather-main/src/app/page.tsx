@@ -43,14 +43,8 @@ export default function Home() {
 
   const weatherData = (data:any) =>{
     setSearchdata(data);
-   
-
-  };
-
-
-
-
   
+  };
 
   return (
     <>
