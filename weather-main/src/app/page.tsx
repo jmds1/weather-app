@@ -9,32 +9,46 @@ import SearchBar from "../../components/SearchBar";
 interface WeatherData {
   city:{
     name:string;
-  } 
+  };
 
   list: {
     
     main :{
     temp: number
     humidity: number
-    }
-   
-   
+    };
+    wind:{
+      speed: number
+    };
+    weather: {
+      main:string
+
+    } [];
+    
   } [];
-  
-  
     
   };
+  
+
 
 
 export default function Home() {
+
+
+  
   // output searchdata as WeatherData Interface or null (initially null)
   const [searchdata, setSearchdata] = useState<WeatherData | null>(null);
+
+  
 
   const weatherData = (data:any) =>{
     setSearchdata(data);
    
 
   };
+
+
+
 
   
 
@@ -43,6 +57,7 @@ export default function Home() {
     
  
    <SearchBar onSearch ={weatherData}/>
+  
  
    
    <div className="container m-auto grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-4 mt-4">
@@ -56,9 +71,12 @@ export default function Home() {
         <div className="tile dark:bg-gray-600 rounded-md p-6">
         {searchdata ? (
         <>
-          <h1 id="city-name" className="tile-marker font-bold ">City Name: {searchdata.city.name}</h1>
+           
+          <h1 id="city-name" className="tile-marker font-bold ">{searchdata.city.name}</h1>
+          <h2 id="degrees">{Math.floor(searchdata.list[0].main.temp)} °F  {searchdata.list[0].weather[0].main}</h2>
           <p id="humidity">Humidity: {searchdata.list[0].main.humidity} %</p>
-          <p id="degrees">{Math.floor(searchdata.list[0].main.temp)} F</p>
+          <p>Wind: {Math.floor(searchdata.list[0].wind.speed)} MPH</p>
+         
         
           </>
           ):(
@@ -69,7 +87,8 @@ export default function Home() {
       </>
           )}   </div>
           <div className="tile dark:bg-gray-600  sm:col-span-1 md:col-span-1 p-4">
-           <p>⛅ Image will go here!🌞</p>
+          
+           <p>Image will go here </p>
           </div>
          
         </div>
