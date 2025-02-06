@@ -5,44 +5,37 @@ import SearchBar from "../../components/SearchBar";
 
 
 
+///FIX TODAY"S FORECAST 
+
+
+
 // Define the shape of the weather data; interface is used because typescript cannot read null values 
-interface WeatherData {
-  city:{
-    name:string;
+
+interface ForecastData{
+name: string;
+main:{ temp:number;humidity: number;}
+weather:{main:string;
+}[];
+  wind:{speed:number;}
+
+};
+interface WeatherData {list: {main: {temp:number; } } [];};
+  
+
+export default function Home() {  
+  // output forecastData as WeatherData Interface or null (initially null)
+  const [forecastData, setForecastData] = useState<ForecastData | null>(null);
+  const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
+  
+
+  
+
+  const getWeatherData = (data:any) =>{
+    setWeatherData(data);
+  
   };
-
-  list: {
-    
-    main :{
-    temp: number
-    humidity: number
-    };
-    wind:{
-      speed: number
-    };
-    weather: {
-      main:string
-
-    } [];
-    
-  } [];
-    
-  };
-  
-
-
-
-export default function Home() {
-
-
-  
-  // output searchdata as WeatherData Interface or null (initially null)
-  const [searchdata, setSearchdata] = useState<WeatherData | null>(null);
-
-  
-
-  const weatherData = (data:any) =>{
-    setSearchdata(data);
+  const getForecastData = (data:any) =>{
+    setForecastData(data);
   
   };
 
@@ -50,7 +43,7 @@ export default function Home() {
     <>
     
  
-   <SearchBar onSearch ={weatherData}/>
+   <SearchBar onSearchWeather ={getForecastData} onSearchForecast= {getWeatherData}/>
   
  
    
@@ -63,13 +56,13 @@ export default function Home() {
   
         <div className="tile grid md:grid-cols-2 dark:bg-gray-600  rounded-md p-6">
         <div className="tile dark:bg-gray-600 rounded-md p-6">
-        {searchdata ? (
+        {forecastData ? (
         <>
            
-          <h1 id="city-name" className="tile-marker font-bold ">{searchdata.city.name}</h1>
-          <h2 id="degrees">{Math.floor(searchdata.list[0].main.temp)} °F  {searchdata.list[0].weather[0].main}</h2>
-          <p id="humidity">Humidity: {searchdata.list[0].main.humidity} %</p>
-          <p>Wind: {Math.floor(searchdata.list[0].wind.speed)} MPH</p>
+          <h1 id="city-name" className="tile-marker font-bold ">{forecastData.name}</h1>
+          <h2 id="degrees">{Math.floor(forecastData.main.temp)} °F  {forecastData.weather[0].main}</h2>
+          <p id="humidity">Humidity: {forecastData.main.humidity} %</p>
+          <p>Wind: {Math.floor(forecastData.wind.speed)} MPH</p>
          
         
           </>
@@ -87,35 +80,41 @@ export default function Home() {
          
         </div>
         {/* Today's Forecast container -2nd grid */}
-        <div className="tile dark:bg-gray-600  rounded-md p-4">
+        {/* <div className="tile dark:bg-gray-600  rounded-md p-4">
           {/* eslint-disable-next-line react/no-unescaped-entities */}
-          <h2 className="tile-marker pb-2">Today&#39;s Forecast</h2>
+          {/* <h2 className="tile-marker pb-2">Today&#39;s Forecast</h2> */}
           {/* <div className="grid grid-cols-3 divide-x-3 divide-dashed divide-indigo-500"> */}
-            <ul className="grid grid-cols-5 divide-x-3 divide-solid ">
-            <li className="pl-2 flex flex-col items-center justify-center">
-              <p id="time">6:00 AM</p>
+            {/* <ul className="grid grid-cols-5 divide-x-3 divide-solid ">
+              {weatherData? (
+                <>
+                <li className="pl-2 flex flex-col items-center justify-center">
+              <p id="time">6AM</p>
               <h1 id="w-icon">☀️</h1>
-              <h1 id="w-degree"> 35°F</h1>
+              <h1 id="w-degree"> {Math.floor(weatherData.list[0].main.temp)}°F</h1>
             </li>
             <li className="pl-2 flex flex-col items-center justify-center"> <p id="time">9:00 AM</p>
             <h1 id="w-icon">☀️</h1>
-            <h1 id="w-degree">50°F</h1>
+            <h1 id="w-degree">{Math.floor(weatherData.list[1].main.temp)}°F</h1>
             </li>
             <li className="pl-2 flex flex-col items-center justify-center"> <p id="time">12:00 PM</p>
             <h1 id="w-icon">☀️</h1>
-            <h1 id="w-degree">80°F</h1> </li>
+            <h1 id="w-degree">{Math.floor(weatherData.list[2].main.temp)}°F</h1> </li>
             <li className="pl-2 flex flex-col items-center justify-center"> <p id="time">3:00 PM</p>
             <h1 id="w-icon">☀️</h1>
-              <h1 id="w-degree">80°F</h1>
+              <h1 id="w-degree">{Math.floor(weatherData.list[3].main.temp)}°F</h1>
             </li>
             <li className="pl-2 flex flex-col items-center justify-center"> <p id="time">6:00 PM</p>
             <h1 id="w-icon">☀️</h1>
-              <h1 id="w-degree">50°F</h1>
-            </li>
-          </ul>
+              <h1 id="w-degree">{Math.floor(weatherData.list[4].main.temp)}°F</h1>
+              </li>
+              </>
+              ) :(<><p>Loading...</p></>)}
+            
+            
+          </ul> */}
           {/* </div> */}
          
-        </div>
+        {/* </div> */} 
         {/* Air Conditions container  - 3rd Grid*/}
         <div className="tile dark:bg-gray-600 rounded-md p-6">
           <h1 className="tile-marker">Air Conditions will go here!</h1>
