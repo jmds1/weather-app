@@ -1,7 +1,7 @@
 "use client";
 import {useState,ChangeEvent, FormEvent} from 'react';
 
-export default function SearchBar({onSearch} : {onSearch:any}){
+export default function SearchBar({onSearchWeather, onSearchForecast} : {onSearchWeather:any; onSearchForecast:any;} ){
 
     const[inputValue, setInputValue] = useState("");
     const[error, setError] = useState("");
@@ -21,11 +21,14 @@ async function onSubmit(event: FormEvent<HTMLFormElement>){
     // console.log("formData", formData.getAll);
     // console.log("citiname",sea);
     try{
-       const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${inputValue}&units=imperial&appid=${apiKey}`);
+       const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${inputValue}&units=imperial&appid=${apiKey}`);
+       const response2 = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${inputValue}&units=imperial&appid=${apiKey}`);
     // api.openweathermap.org/data/2.5/weather?q=
 
 
-    const data = await response.json();
+    const weather = await response.json();
+    const forecast = await response2.json(); 
+    console.log("DATA2",forecast);
     //pass the data to the prop called onSearch
 //if response is 404, then output an error because city name is invalid 
     if(!response.ok){
@@ -34,13 +37,14 @@ async function onSubmit(event: FormEvent<HTMLFormElement>){
      
     }
     else{
-        onSearch(data);
+        onSearchForecast(forecast)
+        onSearchWeather(weather);
         setError("");
         setInputValue("");
         
         
     }
-    console.log(data);  
+    console.log(weather);  
    
     }catch(e:any){
         setError(e.message || "An error occurred. Please try again.");
