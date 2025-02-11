@@ -1,7 +1,9 @@
 // import "./globals.css";
 "use client";
-import {useState} from 'react';
+import { useState} from 'react';
 import SearchBar from "../../components/SearchBar";
+
+
 
 
 
@@ -27,6 +29,8 @@ interface WeatherData {
   main: 
   {
     temp:number; 
+    temp_max:number;
+    temp_min: number;
    
 } 
 weather:{
@@ -46,6 +50,7 @@ const formatDate = (dateString :string)=>{
     day: "numeric",
   });
 }
+
   
 
 export default function Home() {  
@@ -69,7 +74,10 @@ export default function Home() {
     <>
     
  
-   <SearchBar onSearchWeather ={getForecastData} onSearchForecast= {getWeatherData}/>
+         <SearchBar onSearchWeather ={getForecastData} onSearchForecast= {getWeatherData}/>
+   
+ 
+
   
  
    
@@ -104,12 +112,7 @@ export default function Home() {
         
         </>
         ):(
-            <>
-
-         
-
-       
-      </>
+          <></>
           )} 
        
 
@@ -140,8 +143,13 @@ export default function Home() {
     <img className="text-sm/6 font-semibold "src={`https://openweathermap.org/img/wn/${weatherData.list[3].weather[0].icon}@2x.png`}/>
       </div>
     </div>
+    <div className="flex min-w-0 gap-x-4">
+      <div className="min-w-0 flex-auto">
+      <p className="text-sm/6 font-semibold ">{weatherData.list[3].weather[0].main}</p>
+      </div>
+    </div>
     <div className=" sm:flex sm:flex-col sm:items-end">
-    <p className="text-sm/6 font-semibold ">High/Low</p>
+    <p className="text-sm/6 font-semibold ">{Math.floor(weatherData.list[3].main.temp)} °F </p>
   </div>
   
   </li>
@@ -156,8 +164,13 @@ export default function Home() {
         <img className="object-scale-down "src={`https://openweathermap.org/img/wn/${weatherData.list[11].weather[0].icon}@2x.png`} />
       </div>
     </div>
+    <div className="flex min-w-0 gap-x-4">
+      <div className="min-w-0 flex-auto">
+      <p className="text-sm/6 font-semibold ">{weatherData.list[11].weather[0].main}</p>
+      </div>
+    </div>
     <div className=" sm:flex sm:flex-col sm:items-end">
-    <p className="text-sm/6 font-semibold ">High/Low</p>
+    <p className="text-sm/6 font-semibold ">{Math.floor(weatherData.list[11].main.temp)} °F </p>
   </div>
   
   </li>
@@ -172,8 +185,13 @@ export default function Home() {
       <img className=" "src={`https://openweathermap.org/img/wn/${weatherData.list[19].weather[0].icon}@2x.png`} />
       </div>
     </div>
+    <div className="flex min-w-0 gap-x-4">
+      <div className="min-w-0 flex-auto">
+      <p className="text-sm/6 font-semibold ">{weatherData.list[19].weather[0].main}</p>
+      </div>
+    </div>
     <div className=" sm:flex sm:flex-col sm:items-end">
-    <p className="text-sm/6 font-semibold ">High/Low</p>
+    <p className="text-sm/6 font-semibold ">{Math.floor(weatherData.list[19].main.temp)} °F </p>
   </div>
   
   </li>
@@ -188,9 +206,13 @@ export default function Home() {
       <img className=" "src={`https://openweathermap.org/img/wn/${weatherData.list[27].weather[0].icon}@2x.png`} />
       </div>
     </div>
-   
+    <div className="flex min-w-0 gap-x-4">
+      <div className="min-w-0 flex-auto">
+      <p className="text-sm/6 font-semibold ">{weatherData.list[27].weather[0].main}</p>
+      </div>
+    </div>
     <div className=" sm:flex sm:flex-col sm:items-end">
-    <p className="text-sm/6 font-semibold ">High/Low</p>
+    <p className="text-sm/6 font-semibold ">{Math.floor(weatherData.list[27].main.temp)} °F </p>
   </div>
   
   </li>
@@ -205,8 +227,13 @@ export default function Home() {
       <img className=" "src={`https://openweathermap.org/img/wn/${weatherData.list[35].weather[0].icon}@2x.png`} />
       </div>
     </div>
+    <div className="flex min-w-0 gap-x-4">
+      <div className="min-w-0 flex-auto">
+      <p className="text-sm/6 font-semibold ">{weatherData.list[35].weather[0].main}</p>
+      </div>
+    </div>
     <div className=" sm:flex sm:flex-col sm:items-end">
-    <p className="text-sm/6 font-semibold ">High/Low</p>
+    <p className="text-sm/6 font-semibold ">{Math.floor(weatherData.list[35].main.temp)} °F </p>
   </div>
   
   </li>
