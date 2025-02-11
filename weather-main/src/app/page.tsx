@@ -97,17 +97,16 @@ export default function Home() {
             <img src={`https://openweathermap.org/img/wn/${forecastData.weather[0].icon}@2x.png`}/>
           </div>
         </div>
+         <div className="tile dark:bg-gray-600 rounded-md p-6">
+
+          <h1 className="tile-marker">Air Conditions will go here!</h1>
+        </div> 
+        
         </>
         ):(
             <>
 
-          <div className="tile grid md:grid-cols-2 dark:bg-gray-600  rounded-md p-6">
-        <div className="tile dark:bg-gray-600 rounded-md p-6">
-            <h1 id="city-name" className="tile-marker font-bold">City Name</h1>
-        <p id="humidity">Humidity %</p>
-        <p id="degrees">Temperature</p>
-       
-        </div> </div>
+         
 
        
       </>
@@ -115,19 +114,20 @@ export default function Home() {
        
 
         {/* Air Conditions container  - 3rd Grid*/}
-        <div className="tile dark:bg-gray-600 rounded-md p-6">
+        {/* <div className="tile dark:bg-gray-600 rounded-md p-6">
 
           <h1 className="tile-marker">Air Conditions will go here!</h1>
-        </div>
+        </div> */}
         </div>
       
-        {/* 7-day forecast goes here  - 4th Grid to the*/}
+        {/* 5-day forecast goes here  - 4th Grid to the*/}
+ {weatherData ? (
+        <>
         <div className="tile dark:bg-gray-600  sm:col-span-1 md:col-span-1 rounded-md p-6">
           <h1 className="tile-marker">5-Day Forecast</h1>
 {/* beginning of 7 day forecast list items */}
     <ul role="list" className="divide-y divide-gray-100 ">
-      {weatherData ? (
-        <>
+     
      
   <li className="flex justify-between gap-x-6 py-5">
     <div className="flex min-w-0 gap-x-4">
@@ -212,12 +212,13 @@ export default function Home() {
   </li>
 
 
-  </>
-      ): (<></>)}
+
+     
   
 </ul>
 
-        </div>
+  </div>  </>
+         ): (<></>)}
       
       </div>
    </>
