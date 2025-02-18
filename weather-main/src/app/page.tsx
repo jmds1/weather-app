@@ -1,6 +1,6 @@
 // import "./globals.css";
 "use client";
-import { useState} from 'react';
+import { useState, useEffect} from 'react';
 import { useQuery } from '@tanstack/react-query';
 import SearchBar from "../../components/SearchBar";
 import React from 'react';
@@ -54,7 +54,7 @@ export default function Home() {
  
   const apiKey = "f40829018e5975b56c55031ac8a4d703";
   const[inputValue, setInputValue] = useState("");
-  const[city, setCity] = useState("");
+  const[city, setCity] = useState("Los Angeles");
   const[error, setError] = useState("");
 
 
@@ -108,12 +108,17 @@ async function fetchData(){
 
 
 }
-const { data, isLoading } = useQuery({
-    queryKey: ["data", city], // ✅ Correct way to define query keys
-    queryFn: fetchData, // ✅ Function to fetch data
+
+const { data, isLoading, refetch} = useQuery({
+    queryKey: ["data", city], // Correct way to define query keys
+    queryFn: fetchData, // Function to fetch data
     enabled: !!city, // Only fetch when city is set (after submit)
   
 });
+//refetch query when city name has been changed 
+useEffect(() => {
+  refetch();
+}, [city, refetch]);
   //------------------------------------------------------------------------
 
   
