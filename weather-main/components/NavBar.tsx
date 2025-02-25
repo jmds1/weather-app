@@ -45,7 +45,7 @@ export default function NavBar(){
         <div className= "hidden sm:ml-6 sm:block">
           <div className="flex space-x-4">
             {/* <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" --> */}
-            <Link href="/"className="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page">Weather</Link>
+            <Link href="/"className="rounded-md  px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Weather</Link>
             <Link href="/cities" className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Cities</Link>
             <Link href="/map" className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Map</Link>
             <Link href="/moonphases" className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Moon Phases</Link>
@@ -60,7 +60,7 @@ export default function NavBar(){
   <div className={` ${active ? "block" : "hidden"} `} id="mobile-menu">
     <div className="space-y-1 px-2 pt-2 pb-3">
       {/* <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" --> */}
-      <Link href="/" className="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white" aria-current="page">Weather</Link>
+      <Link href="/" className="block rounded-md  px-3 py-2 text-base font-medium hover:bg-gray-700 hover:text-white" >Weather</Link>
       <Link href="/cities" className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Cities</Link>
       <Link href="/map" className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Map</Link>
       <Link href="/moonphases" className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Moon Phases</Link>
