@@ -14,6 +14,8 @@ import React from 'react';
 interface ForecastData{
   name: string;
   visibility: number;
+  timezone:number;
+  dt: number;
   main:{ temp:number;humidity: number;
     pressure: number;
     
@@ -32,7 +34,7 @@ sunset: number;
 interface WeatherData {
 
   list: {
-    dt_txt: string; 
+    dt: number; 
   main: 
   {
     temp:number; 
@@ -49,25 +51,52 @@ weather:{
 };
 
 //function that formats the date 
-const formatDate = (dateString :string)=>{
-  const date = new Date(dateString);
+const formatDate = (epochDate :number)=>{
+  const date = new Date(epochDate * 1000);
   return date.toLocaleDateString("en-US",{
     weekday: "short", 
     month: "short", 
     day: "numeric",
+  
   });
 }
-const convertDate = (date: number) =>{
-  console.log("date", date);
-  return new Date(date *1000).toLocaleTimeString();
+const grabEpochTime = (epochDate : number) =>{
+  const date = new Date(epochDate *1000);
+  return date.toLocaleTimeString("en-US",{
+    hour: "2-digit", 
+    minute:"2-digit",
+    timeZone: "GMT"
+  });
+}
+
+const convertEpochtoUTC = (epoch: number, timezone: number) =>{
+ 
+  return new Date((epoch + timezone)* 1000).toLocaleTimeString("en-US", {
+    hour: "2-digit", 
+    minute:"2-digit",
+    timeZone: "UTC"
+  });
 
 
 }
 const metersToKM = (num: number)=>{
   return num * 0.001;
 }
-//today's date 
-const today = new Date().toDateString(); 
+//current day
+const convertEpochtoDay = (epoch:number, timezone: number) =>{
+ const date = new Date((epoch +timezone) * 1000);
+
+return  date.toLocaleDateString("en-US", {
+  month: "short",
+  weekday: "long", 
+  day: "numeric",
+  timeZone: "UTC"
+
+}
+);
+
+
+}
 
 
 
@@ -114,6 +143,7 @@ async function fetchData(){
     const weather = await response1.json();
    console.log(weather);
     const forecast = await response2.json();
+    console.log("fore", forecast);
 
 //if response fails then ask user to input value again
       if(!response1.ok){
@@ -178,7 +208,7 @@ useEffect(() => {
          {/* this is where the top-left grid 1 side begins  */}
         <div className="grid grid-cols-2 dark:bg-gray-600 rounded-md p-6">
         <div className="dark:bg-gray-600 rounded-md p-6">
-          <h1 className="font-bold">{today}</h1>
+          <h1 className="font-bold">{convertEpochtoDay(data.weather.dt, data.weather.timezone)}</h1>
           <h1 id="city-name" className="font-bold ">{data.weather.name}</h1>
           <h2 id="degrees">{Math.floor(data.weather.main.temp)} °F  {data.weather.weather[0].main}</h2>
           <p id="humidity">Humidity: {data.weather.main.humidity} %</p>
@@ -204,12 +234,12 @@ useEffect(() => {
     <div className="gap-2 items-center text-xs font-semibold mt-4 ">
           <p className="whitespace-nowrap">Sunrise</p>
           <div className="icon"><LuSunrise size={48}/></div>
-          <p>{convertDate(data.weather.sys.sunrise) }</p>
+          <p>{convertEpochtoUTC(data.weather.sys.sunrise, data.weather.timezone) }</p>
     </div>
     <div className="gap-2 items-center text-xs font-semibold mt-4 ">
           <p className="whitespace-nowrap">Sunset</p>
           <div className="icon"><LuSunset size={48}/></div>
-          <p>{convertDate(data.weather.sys.sunset)}</p>
+          <p>{convertEpochtoUTC(data.weather.sys.sunset, data.weather.timezone)}</p>
     </div>
         </div> 
         
@@ -233,8 +263,10 @@ useEffect(() => {
   <li className="flex justify-between gap-x-6 py-5">
     <div className="flex min-w-0 gap-x-4">
       <div className="min-w-0 flex-auto">
-        <p className="text-sm/6 font-semibold">{formatDate(data.forecast.list[3].dt_txt)}</p>
+        <p className="text-sm/6 font-semibold">{formatDate(data.forecast.list[3].dt)}</p>
+        <p className="text-sm/6 font-semibold">{grabEpochTime(data.forecast.list[3].dt)}</p>
       </div>
+      
     </div>
     <div className="flex min-w-0 gap-x-4">
       <div className="min-w-0 flex-auto">
@@ -254,7 +286,8 @@ useEffect(() => {
   <li className="flex justify-between gap-x-6 py-5">
     <div className="flex min-w-0 gap-x-4">
       <div className="min-w-0 flex-auto">
-        <p className=" text-sm/6 font-semibold">{formatDate(data.forecast.list[11].dt_txt)}</p>
+        <p className=" text-sm/6 font-semibold">{formatDate(data.forecast.list[11].dt)}</p>
+        <p className=" text-sm/6 font-semibold">{grabEpochTime(data.forecast.list[11].dt)}</p>
       </div>
     </div>
     <div className="flex min-w-0 gap-x-4">
@@ -275,7 +308,8 @@ useEffect(() => {
   <li className="flex justify-between gap-x-6 py-5">
     <div className="flex min-w-0 gap-x-4">
       <div className="min-w-0 flex-auto">
-        <p className="text-sm/6 font-semibold ">{formatDate(data.forecast.list[19].dt_txt)}</p>
+        <p className="text-sm/6 font-semibold ">{formatDate(data.forecast.list[19].dt)}</p>
+        <p className="text-sm/6 font-semibold ">{grabEpochTime(data.forecast.list[19].dt)}</p>
       </div>
     </div>
     <div className="flex min-w-0 gap-x-4">
@@ -296,7 +330,8 @@ useEffect(() => {
   <li className="flex justify-between gap-x-6 py-5">
     <div className="flex min-w-0 gap-x-4">
       <div className="min-w-0 flex-auto">
-        <p className="text-sm/6 font-semibold ">{formatDate(data.forecast.list[27].dt_txt)}</p>
+        <p className="text-sm/6 font-semibold ">{formatDate(data.forecast.list[27].dt)}</p>
+        <p className="text-sm/6 font-semibold ">{grabEpochTime(data.forecast.list[27].dt)}</p>
       </div>
     </div>
     <div className="flex min-w-0 gap-x-4">
@@ -317,7 +352,8 @@ useEffect(() => {
   <li className="flex justify-between gap-x-6 py-5">
     <div className="flex min-w-0 gap-x-4">
       <div className="min-w-0 flex-auto">
-        <p className="text-sm/6 font-semibold ">{formatDate(data.forecast.list[35].dt_txt)}</p>
+        <p className="text-sm/6 font-semibold ">{formatDate(data.forecast.list[35].dt)}</p>
+        <p className="text-sm/6 font-semibold ">{grabEpochTime(data.forecast.list[35].dt)}</p>
       </div>
     </div>
     <div className="flex min-w-0 gap-x-4">
