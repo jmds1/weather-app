@@ -14,7 +14,7 @@ We use the OpenWeather API to fetch accurate weather updates.
 Built with TypeScript and Next.js.
 
 The app is still a work in progress, but feel free to explore the homepage and check the weather in your city!
-[Link to Deployed App]([https://01weather-map.vercel.app/](https://weather-ob2rvlqnt-jesus-martinez-de-santos-projects.vercel.app/))
+[Link to Deployed App](https://weather-ob2rvlqnt-jesus-martinez-de-santos-projects.vercel.app/)
 
 
 ## Contributors
