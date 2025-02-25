@@ -1,5 +1,8 @@
 // import "./globals.css";
 "use client";
+import { ImMeter } from "react-icons/im";
+import { FaEye } from "react-icons/fa";
+import { LuSunrise, LuSunset } from "react-icons/lu";
 import { useState, useEffect} from 'react';
 import { useQuery } from '@tanstack/react-query';
 import SearchBar from "../../components/SearchBar";
@@ -10,7 +13,16 @@ import React from 'react';
 // Define the shape of the weather data; interface is used because typescript cannot read null values 
 interface ForecastData{
   name: string;
-  main:{ temp:number;humidity: number;}
+  visibility: number;
+  main:{ temp:number;humidity: number;
+    pressure: number;
+    
+  }
+  sys:{
+
+sunrise: number; //convert this epoch time to date
+sunset: number;
+  }
   weather:{main:string;
     icon:string;
   }[];
@@ -45,6 +57,18 @@ const formatDate = (dateString :string)=>{
     day: "numeric",
   });
 }
+const convertDate = (date: number) =>{
+  console.log("date", date);
+  return new Date(date *1000).toLocaleTimeString();
+
+
+}
+const metersToKM = (num: number)=>{
+  return num * 0.001;
+}
+//today's date 
+const today = new Date().toDateString(); 
+
 
 
 
@@ -88,7 +112,9 @@ async function fetchData(){
   const response2 = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&appid=${apiKey}`);
 
     const weather = await response1.json();
+   console.log(weather);
     const forecast = await response2.json();
+
 //if response fails then ask user to input value again
       if(!response1.ok){
         setInputValue("");
@@ -149,41 +175,55 @@ useEffect(() => {
     
 
          <>
-        <div className="tile grid md:grid-cols-2 dark:bg-gray-600  rounded-md p-6">
-        <div className="tile dark:bg-gray-600 rounded-md p-6">
-      
-       
-           
-          <h1 id="city-name" className="tile-marker font-bold ">{data.weather.name}</h1>
+         {/* this is where the top-left grid 1 side begins  */}
+        <div className="grid grid-cols-2 dark:bg-gray-600 rounded-md p-6">
+        <div className="dark:bg-gray-600 rounded-md p-6">
+          <h1 className="font-bold">{today}</h1>
+          <h1 id="city-name" className="font-bold ">{data.weather.name}</h1>
           <h2 id="degrees">{Math.floor(data.weather.main.temp)} °F  {data.weather.weather[0].main}</h2>
           <p id="humidity">Humidity: {data.weather.main.humidity} %</p>
           <p>Wind: {Math.floor(data.weather.wind.speed)} MPH</p>
-          <div className="tile dark:bg-gray-600  sm:col-span-1 md:col-span-1 p-4">
-        </div>
+         
       </div>
-         <div className="tile dark:bg-gray-600  sm:col-span-1 md:col-span-1 p-4">
+         <div className="dark:bg-gray-600  sm:col-span-1  p-4">
             <img src={`https://openweathermap.org/img/wn/${data.weather.weather[0].icon}@2x.png`}/>
           </div>
         </div>
-         <div className="tile dark:bg-gray-600 rounded-md p-6">
-
-          <h1 className="tile-marker">Air Conditions will go here!</h1>
+         {/* Air Conditions container  - 3rd Grid*/}
+         <div className="grid grid-cols-4 dark:bg-gray-600  p-10 rounded-md">
+          <div className="gap-2 items-center text-xs font-semibold mt-4 ">
+          <p className="whitespace-nowrap">Air Pressure</p>
+          <div className="icon"><ImMeter size={48} /></div>
+          <p>{data.weather.main.pressure} hPa</p>
+    </div>
+    <div className="gap-2 items-center text-xs font-semibold mt-4 ">
+          <p className="whitespace-nowrap">Visibility</p>
+          <div className="icon"><FaEye size={48}/></div>
+          <p>{metersToKM(data.weather.visibility)} km</p>
+    </div>
+    <div className="gap-2 items-center text-xs font-semibold mt-4 ">
+          <p className="whitespace-nowrap">Sunrise</p>
+          <div className="icon"><LuSunrise size={48}/></div>
+          <p>{convertDate(data.weather.sys.sunrise) }</p>
+    </div>
+    <div className="gap-2 items-center text-xs font-semibold mt-4 ">
+          <p className="whitespace-nowrap">Sunset</p>
+          <div className="icon"><LuSunset size={48}/></div>
+          <p>{convertDate(data.weather.sys.sunset)}</p>
+    </div>
         </div> 
         
+      
         </>
-        
        
 
-        {/* Air Conditions container  - 3rd Grid*/}
-        {/* <div className="tile dark:bg-gray-600 rounded-md p-6">
 
-          <h1 className="tile-marker">Air Conditions will go here!</h1>
-        </div> */}
         </div>
+        
       
         {/* 5-day forecast goes here  - 4th Grid to the*/}
 
-        <>
+      
         <div className="tile dark:bg-gray-600  sm:col-span-1 md:col-span-1 rounded-md p-6">
           <h1 className="tile-marker">5-Day Forecast</h1>
 {/* beginning of 7 day forecast list items */}
@@ -302,7 +342,7 @@ useEffect(() => {
   
 </ul>
 
-  </div>  </>
+  </div> 
         
       
       </div>
